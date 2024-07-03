@@ -14,20 +14,21 @@ Original file is located at
 3. To clearly represent the given data in the pictorial plots which will reduce the coplexity of classification and make our analysis easy.
 """
 
-from google.colab import drive
-drive.mount('/content/drive')
+# from google.colab import drive
+# drive.mount('/content/drive')
 
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
 import warnings
-warnings.filterwarnings("ignore")
 import os
+
+warnings.filterwarnings("ignore")
 
 print(os.getcwd())
 
-data=pd.read_csv("haberman.csv")
+data = pd.read_csv("haberman.csv")
 print(data)
 
 """+ Imported the data to the data variable and read the data using Pandas."""
@@ -36,48 +37,48 @@ print(data.shape)
 
 """+ Minimum and Maximum values of the columns data in the table."""
 
-data.columns=['age','year','nodes','status']
-print('min age =',data.age.min())
-print('max age =',data.age.max())
-print('min year ',data.year.min())
-print('max year=',data.year.max())
-print('min nodes = ',data.nodes.min())
-print('max nodes=',data.nodes.max())
+data.columns = ['age', 'year', 'nodes', 'status']
+print('min age =', data.age.min())
+print('max age =', data.age.max())
+print('min year ', data.year.min())
+print('max year=', data.year.max())
+print('min nodes = ', data.nodes.min())
+print('max nodes=', data.nodes.max())
 
 """+ Displaying all the data present in table according to nodes.
 
 
 """
 
-n=data.groupby('nodes')
+n = data.groupby('nodes')
 for n1 in n:
-  print(n1)
+    print(n1)
 
-print('data where maximum nodes =\n',data[data.nodes==data.nodes.max()])
+print('data where maximum nodes =\n', data[data.nodes == data.nodes.max()])
 
 data.describe()
 
-print('mean of age =',data.age.mean())
-print('mean of year =',data.year.mean())
-print('mean of nodes =',data.nodes.mean())
+print('mean of age =', data.age.mean())
+print('mean of year =', data.year.mean())
+print('mean of nodes =', data.nodes.mean())
 
-print('median of age =',data.age.median())
-print('median of year =',data.year.median())
-print('median of nodes =',data.nodes.median())
+print('median of age =', data.age.median())
+print('median of year =', data.year.median())
+print('median of nodes =', data.nodes.median())
 
-print('standard deviation of age =',data.age.std())
-print('standard deviation of year =',data.year.std())
-print('standard deviation of nodes =',data.nodes.std())
+print('standard deviation of age =', data.age.std())
+print('standard deviation of year =', data.year.std())
+print('standard deviation of nodes =', data.nodes.std())
 
-print('percentile of age =',np.percentile(data['age'],np.arange(0,100,25)))
-print('percentile of year =',np.percentile(data['year'],np.arange(0,100,25)))
-print('percentile of nodes =',np.percentile(data['nodes'],np.arange(0,101,25)))
+print('percentile of age =', np.percentile(data['age'], np.arange(0, 100, 25)))
+print('percentile of year =', np.percentile(data['year'], np.arange(0, 100, 25)))
+print('percentile of nodes =', np.percentile(data['nodes'], np.arange(0, 101, 25)))
 
 """+ Univariate analysis"""
 
-sns.FacetGrid(data,hue='status')\
-.map(sns.distplot,'year')\
-.add_legend()
+sns.FacetGrid(data, hue='status') \
+    .map(sns.distplot, 'year') \
+    .add_legend()
 plt.grid()
 plt.legend()
 plt.title(' Univarient analysis ')
@@ -87,21 +88,20 @@ plt.show()
 + As shown in the pair plot all the points are very close to each other, hence it is very difficult to analyse the data in below predicted plots.
 """
 
-#pair plot ( Bi-varient analysis)
+# pair plot ( Bi-varient analysis)
 sns.set_style('whitegrid')
-sns.pairplot(data,hue='status')\
-.add_legend()
+sns.pairplot(data, hue='status') \
+    .add_legend()
 plt.title('Pair plot')
 plt.show()
 
 for col in data.columns:
+    sns.FacetGrid(data, hue='status') \
+        .map(sns.distplot, col) \
+        .add_legend()
 
-  sns.FacetGrid(data,hue='status')\
-              .map(sns.distplot,col)\
-              .add_legend()
-
-  plt.grid()
-  plt.title('uni-varient')
+    plt.grid()
+    plt.title('uni-varient')
 
 plt.show()
 
@@ -109,38 +109,38 @@ plt.show()
 
 plt.title('PDF & CDF of age,year and nodes')
 ''' data of AGE '''
-counts,bin_edges= np.histogram(data['age'],bins=20,density=True)
-pdf=counts/sum(counts)
+counts, bin_edges = np.histogram(data['age'], bins=20, density=True)
+pdf = counts / sum(counts)
 
-#print("pdf =: ",pdf)
-#print("bin edges =: ",bin_edges)
+# print("pdf =: ",pdf)
+# print("bin edges =: ",bin_edges)
 
-cdf=np.cumsum(pdf)
+cdf = np.cumsum(pdf)
 
-plt.plot(bin_edges[1:],pdf,label='pdf')
-plt.plot(bin_edges[1:],cdf,label='cdf')
+plt.plot(bin_edges[1:], pdf, label='pdf')
+plt.plot(bin_edges[1:], cdf, label='cdf')
 plt.xlabel('colomn')
 
 ''' data of YEAR '''
-counts,bin_edges= np.histogram(data['year'],bins=20,density=True)
-pdf=counts/sum(counts)
-#print("pdf =: ",pdf)
-#print("bin edges =: ",bin_edges)
-cdf=np.cumsum(pdf)
+counts, bin_edges = np.histogram(data['year'], bins=20, density=True)
+pdf = counts / sum(counts)
+# print("pdf =: ",pdf)
+# print("bin edges =: ",bin_edges)
+cdf = np.cumsum(pdf)
 
-plt.plot(bin_edges[1:],pdf,label='pdf')
-plt.plot(bin_edges[1:],cdf,label='cdf')
+plt.plot(bin_edges[1:], pdf, label='pdf')
+plt.plot(bin_edges[1:], cdf, label='cdf')
 plt.xlabel('colomn')
 
 '''data of NODES '''
 
-counts,bin_edges= np.histogram(data['nodes'],bins=20,density=True)
-pdf=counts/sum(counts)
-#print("pdf =: ",pdf)
-#print("bin edges =: ",bin_edges)
-cdf=np.cumsum(pdf)
-plt.plot(bin_edges[1:],pdf,label='pdf')
-plt.plot(bin_edges[1:],cdf,label='cdf')
+counts, bin_edges = np.histogram(data['nodes'], bins=20, density=True)
+pdf = counts / sum(counts)
+# print("pdf =: ",pdf)
+# print("bin edges =: ",bin_edges)
+cdf = np.cumsum(pdf)
+plt.plot(bin_edges[1:], pdf, label='pdf')
+plt.plot(bin_edges[1:], cdf, label='cdf')
 plt.xlabel('colomn')
 plt.legend()
 plt.show()
@@ -149,13 +149,13 @@ plt.show()
 
 # Box Plot with whiskers
 
-sns.boxplot(x='status',y='age',data=data,hue='status',dodge=False)
+sns.boxplot(x='status', y='age', data=data, hue='status', dodge=False)
 plt.title('Box plot for age')
 plt.show()
-sns.boxplot(x='status',y='year',data=data,hue='status',dodge=False)
+sns.boxplot(x='status', y='year', data=data, hue='status', dodge=False)
 plt.title('Box plot for year')
 plt.show()
-sns.boxplot(x='status',y='nodes',data=data,hue='status',dodge=False)
+sns.boxplot(x='status', y='nodes', data=data, hue='status', dodge=False)
 plt.title('Box plot for nodes')
 plt.show()
 
@@ -165,29 +165,29 @@ plt.show()
 
 # Violin Plot
 
-sns.violinplot(x='status',y='age',data=data,hue='status',dodge=False)
+sns.violinplot(x='status', y='age', data=data, hue='status', dodge=False)
 plt.title('Violin plot for age')
 plt.show()
-sns.violinplot(x='status',y='year',data=data,hue='status',dodge=False)
+sns.violinplot(x='status', y='year', data=data, hue='status', dodge=False)
 plt.title('Violin plot for year')
 
 plt.show()
-sns.violinplot(x='status',y='nodes',data=data,hue='status',dodge=False)
+sns.violinplot(x='status', y='nodes', data=data, hue='status', dodge=False)
 plt.title('Violin plot for nodes')
 
 plt.show()
 
 # Contour plot
 
-sns.jointplot(x='status',y='age',data=data,kind='kde',dodge=False)
+sns.jointplot(x='status', y='age', data=data, kind='kde', dodge=False)
 plt.title('Contour plot for age')
 
 plt.show()
-sns.jointplot(x='status',y='year',data=data,kind='kde',dodge=False)
+sns.jointplot(x='status', y='year', data=data, kind='kde', dodge=False)
 plt.title('Contour plot for year')
 plt.show()
 
-sns.jointplot(x='status',y='nodes',data=data,kind='kde',dodge=False)
+sns.jointplot(x='status', y='nodes', data=data, kind='kde', dodge=False)
 plt.title('Contour plot for nodes')
 plt.show()
 
